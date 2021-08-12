@@ -9,12 +9,18 @@ while True:
     try:
         clt_sct, addr = svr_sct.accept()
         print('Connection from', addr)
+        response = 'You are connected\n'.encode()
+        clt_sct.send(response)
+        file = open('test2.txt', 'wb')
 
+        request = clt_sct.recv(256)
+        while request != b'':
 
-        while True:
+            file.write(request)
             request = clt_sct.recv(256)
-            print(request.decode())
-            response = 'You are connected\n'.encode()
-            clt_sct.send(response)
+
     except:
-        print('Something wrong.')
+        print('Something wrong')
+    finally:
+        print('Done')
+        file.close()
