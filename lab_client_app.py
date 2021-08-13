@@ -13,22 +13,22 @@ def connect_to_server (ip_addr, port):
         return -1
 
 
-def send_file(svr_sct, file_path):
+def send_file(svr_sct, file_path_with_name):
     try:
-        file = open(file_path, 'rb')
+        file = open(file_path_with_name, 'rb')
         file_part = file.read(256)
-        print(len(file_part))
 
         while file_part != b'':
-            print(len(file_part))
             svr_sct.send(file_part)
             file_part = file.read(256)
 
-    except:
-        print('Something going wrong\n')
-        return -1
-    finally:
+        print('Done')
         file.close()
+
+    except:
+        print('Error while reading and sending file')
+
+    finally:
         svr_sct.close()
 
 
