@@ -1,7 +1,7 @@
 import socket
 
 
-def connect_to_server (ip_addr, port):
+def connect_to_server(ip_addr, port):
     try:
         svr_sct = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         svr_sct.connect((ip_addr, port))

@@ -1,9 +1,8 @@
 import socket
-import pymysql
 
-MYSQL_CONFIG = { 'host' : 'localhost', 'user' : 'user', 'password' : '12345', 'db_name' : 'My database'}
 
-def create_server_socket (ip_addr, port):
+
+def create_server_socket(ip_addr, port):
     try:
         svr_sct = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         svr_sct.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -42,6 +41,7 @@ def load_and_save_data_to_file(clt_sct, file_path_with_name):
 
 def load_and_save_file_attributes_to_mysql_database(clt_sct, mysql_path_name):
     print('Hello')
+
 
 svr_sct = create_server_socket('localhost', 666)
 if svr_sct != -1:
