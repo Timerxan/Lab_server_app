@@ -42,7 +42,7 @@ def insert_data_to_mysql_database(file_info: list, mysql_config: dict, db_config
 
                 insert_data= f'INSERT INTO '\
                              f'{mysql_config["table_name"]}({", ".join(f"{column[0]}" for column in db_config)}) '\
-                             f'VALUES ({file_info[0]} ,{current_day}, {file_info[1]}, {file_info[2]})'
+                             f'VALUES ("{file_info[0]}" ,"{current_day}", "{file_info[1]}", "{file_info[2]}")'
                 print(insert_data)
                 cursor.execute(insert_data)
                 connection.commit()
@@ -58,4 +58,4 @@ def insert_data_to_mysql_database(file_info: list, mysql_config: dict, db_config
         print(ex)
 
 
-# insert_data_to_mysql_database(("'file_10'", "'fileinfo_1'", "'file_attr_23423342'"), MYSQL_CONFIG)
+# insert_data_to_mysql_database(('file_10', 'fileinfo_1', 'file_attr_23423342'), MYSQL_CONFIG)

@@ -13,6 +13,11 @@ def connect_to_server(ip_addr, port):
         return -1
 
 
+def send_file_info(svr_sct, file_path_with_name):
+
+    pass
+
+
 def send_file(svr_sct, file_path_with_name):
     try:
         file = open(file_path_with_name, 'rb')
