@@ -8,6 +8,7 @@ def create_server_socket(ip_addr, port):
         svr_sct.bind((ip_addr, port))
         svr_sct.listen(1)
         return svr_sct
+
     except Exception as ex:
         print('Err: Server not created./n', ex)
         return -1
@@ -20,18 +21,20 @@ def accept_client_connection(svr_sct):
         response = 'You are connected\n'.encode()
         clt_sct.send(response)
         return clt_sct
+
     except Exception as ex:
         print('Client acception failed/n', ex)
         return -1
 
 
-def load_and_save_file_info(clt_sct):
+def load_and_save_file_info_to_mysql_database(clt_sct):
     try:
-        print(clt_sct.recv(256).decode())
-        op_msql.insert_data_to_mysql_database(['file_10', 'fileinfo_1', 'file_attr_23423342'],
-                                              op_msql.MYSQL_CONFIG)
+        file_info = clt_sct.recv(256).decode()
+        print('file_info:\n', file_info)
+        op_msql.insert_data_to_mysql_database(file_info, op_msql.MYSQL_CONFIG)
+
     except Exception as ex:
-        print('Can not get file_info', ex)
+        print('Can not get and save file_info', ex)
 
 
 def load_and_save_data_to_file(clt_sct, file_path_with_name):
@@ -43,6 +46,7 @@ def load_and_save_data_to_file(clt_sct, file_path_with_name):
             request = clt_sct.recv(256)
         file.close()
         print('File loaded and saved as ', file_path_with_name)
+
     except Exception as ex:
         print('Error while loading and saving file/n', ex)
 
@@ -52,6 +56,6 @@ if svr_sct != -1:
     while True:
         clt_sct = accept_client_connection(svr_sct)
         if clt_sct != -1:
-            load_and_save_file_info(clt_sct)
+            load_and_save_file_info_to_mysql_database(clt_sct)
             load_and_save_data_to_file(clt_sct, 'test2.txt')
 

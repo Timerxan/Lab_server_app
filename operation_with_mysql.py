@@ -11,14 +11,16 @@ MYSQL_CONFIG = {
                 }
 
 DB_CONFIG = (
-             ('name', 'varchar(100)'),
-             ('creation_date', 'date'),
-             ('file_info', 'varchar(256)'),
-             ('file_attributes', 'varchar(256)')
+             ('file_new_name', 'varchar(100)'),
+             ('load_and_save_date', 'datetime'),
+             ('loaded_from_computer_name', 'varchar(100)'),
+             ('file_initial_absolute_path', 'varchar(256)'),
+             ('file_initial_creation_date', 'datetime'),
+             ('file_size', 'int')
             )
 
 
-def insert_data_to_mysql_database(file_info: list, mysql_config: dict, db_config: list = DB_CONFIG):
+def insert_data_to_mysql_database(file_new_name: str, file_info: str, mysql_config: dict, db_config: list = DB_CONFIG):
     try:
         connection = pymysql.connect(
                                     host=mysql_config['host'],
@@ -38,11 +40,12 @@ def insert_data_to_mysql_database(file_info: list, mysql_config: dict, db_config
                 # cursor.execute(create_table)
                 # print('Table created')
 
-                current_day = dt.datetime.now().date().strftime('"%Y-%m-%d"')
+                current_date = dt.datetime.now().strftime('"%Y-%m-%d %H:%M:%S"')
 
                 insert_data= f'INSERT INTO '\
                              f'{mysql_config["table_name"]}({", ".join(f"{column[0]}" for column in db_config)}) '\
-                             f'VALUES ("{file_info[0]}" ,"{current_day}", "{file_info[1]}", "{file_info[2]}")'
+                             f'VALUES ("{file_new_name}" ,"{current_date}", ' \
+                             f'"{file_info[1]}", "{file_info[2]}")'
                 print(insert_data)
                 cursor.execute(insert_data)
                 connection.commit()
@@ -54,7 +57,7 @@ def insert_data_to_mysql_database(file_info: list, mysql_config: dict, db_config
             connection.close()
 
     except Exception as ex:
-        print('Connection failed.')
+        print('Connection to MySQL database failed.')
         print(ex)
 
 

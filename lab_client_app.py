@@ -21,7 +21,7 @@ def send_file_info(svr_sct, file_path):
                 f'{Path(file_path).resolve()}\n' \
                 f'{strftime("%Y-%m-%d %H:%M:%S", localtime(info.st_ctime))}\n' \
                 f'{info.st_size}'
-    print(file_info)
+    print('file_info:\n', file_info)
 
     try:
         svr_sct.send(file_info.encode())
