@@ -3,6 +3,7 @@ from os import stat
 from time import localtime, strftime
 from pathlib import Path
 
+
 def connect_to_server(ip_addr, port):
     try:
         svr_sct = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

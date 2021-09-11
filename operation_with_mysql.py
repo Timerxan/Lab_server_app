@@ -1,26 +1,10 @@
 import pymysql
 import datetime as dt
-
-MYSQL_CONFIG = {
-                'host': 'localhost',
-                'user': 'Timerxan',
-                'port': 3306,
-                'password': '123456',
-                'db_name': 'sakila',
-                'table_name': 'files_test_5'
-                }
-
-DB_CONFIG = (
-             ('file_new_name', 'varchar(100)'),
-             ('load_and_save_date', 'datetime'),
-             ('loaded_from_computer_name', 'varchar(100)'),
-             ('file_initial_absolute_path', 'varchar(256)'),
-             ('file_initial_creation_date', 'datetime'),
-             ('file_size', 'int')
-            )
+import database_config as db_c
 
 
-def insert_data_to_mysql_database(file_new_name: str, file_info: str, mysql_config: dict, db_config: list = DB_CONFIG):
+def insert_data_to_mysql_database(file_new_name: str, file_info: str, mysql_config: dict,
+                                  db_config: list = db_c.DB_CONFIG):
     try:
         connection = pymysql.connect(
                                     host=mysql_config['host'],
@@ -40,12 +24,13 @@ def insert_data_to_mysql_database(file_new_name: str, file_info: str, mysql_conf
                 # cursor.execute(create_table)
                 # print('Table created')
 
-                current_date = dt.datetime.now().strftime('"%Y-%m-%d %H:%M:%S"')
+                current_date = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                cursor.execute('SET sql_mode = NO_BACKSLASH_ESCAPES')
 
                 insert_data= f'INSERT INTO '\
                              f'{mysql_config["table_name"]}({", ".join(f"{column[0]}" for column in db_config)}) '\
                              f'VALUES ("{file_new_name}" ,"{current_date}", ' \
-                             f'"{file_info[1]}", "{file_info[2]}")'
+                             f'"{file_info[0]}", "{file_info[1]}", "{file_info[2]}", {file_info[3]})'
                 print(insert_data)
                 cursor.execute(insert_data)
                 connection.commit()
@@ -60,5 +45,3 @@ def insert_data_to_mysql_database(file_new_name: str, file_info: str, mysql_conf
         print('Connection to MySQL database failed.')
         print(ex)
 
-
-# insert_data_to_mysql_database(('file_10', 'fileinfo_1', 'file_attr_23423342'), MYSQL_CONFIG)

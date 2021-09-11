@@ -1,5 +1,7 @@
 import socket
 import operation_with_mysql as op_msql
+import database_config as db_c
+
 
 def create_server_socket(ip_addr, port):
     try:
@@ -30,8 +32,10 @@ def accept_client_connection(svr_sct):
 def load_and_save_file_info_to_mysql_database(clt_sct):
     try:
         file_info = clt_sct.recv(256).decode()
+        file_info = file_info.split('\n')
         print('file_info:\n', file_info)
-        op_msql.insert_data_to_mysql_database(file_info, op_msql.MYSQL_CONFIG)
+        file_new_name = 'test2.txt'
+        op_msql.insert_data_to_mysql_database(file_new_name, file_info, db_c.MYSQL_CONFIG)
 
     except Exception as ex:
         print('Can not get and save file_info', ex)
